@@ -1,20 +1,22 @@
-package import com.tievoli.sbfuse.framework.http.RestResponse;
+package ${package.Controller};
+
+
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RestController;
 
-${package.Controller}
-        ;
-${package.Service}.${table.serviceName};
-${package.Entity}.${entity};
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+import com.tievoli.sbfuse.framework.http.RestResponse;
+import ${package.Service}.${table.serviceName};
+import ${package.Entity}.${entity};
+import java.util.List;
 #if(${restControllerStyle})
+import org.springframework.web.bind.annotation.RestController;
 #else
+import org.springframework.stereotype.Controller;
 #end
 #if(${superControllerClassPackage})
-    ${superControllerClassPackage}
-        ;
+import ${superControllerClassPackage};
 #end
 
 /**
