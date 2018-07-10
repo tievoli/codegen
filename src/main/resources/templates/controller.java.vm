@@ -1,0 +1,101 @@
+package ${package.Controller};
+
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+import com.tievoli.sbfuse.framework.http.RestResponse;
+import ${package.Service}.${table.serviceName};
+import ${package.Entity}.${entity};
+import java.util.List;
+
+
+#if(${restControllerStyle})
+import org.springframework.web.bind.annotation.RestController;
+#else
+import org.springframework.stereotype.Controller;
+#end
+#if(${superControllerClassPackage})
+import ${superControllerClassPackage};
+#end
+
+/**
+ * <p>
+ * $!{table.comment}控制器.
+ * </p>
+ *
+ * @author ${author}
+ * @since ${date}
+ */
+#if(${restControllerStyle})
+@RestController
+#else
+@Controller
+#end
+@RequestMapping("#if(${package.ModuleName})/${package.ModuleName}#end/#if(${controllerMappingHyphenStyle})${controllerMappingHyphen}#else${table.entityPath}#end")
+#if(${kotlin})
+class ${table.controllerName}#if(${superControllerClass}) : ${superControllerClass}()#end
+
+#else
+@Api(tags = "$!{table.comment}相关接口")
+#if(${superControllerClass})
+public class ${table.controllerName} #*extends ${superControllerClass} *#{
+#else
+public class ${table.controllerName} {
+#end
+
+        @Autowired
+        private ${table.serviceName} ${table.entityPath}Service;
+
+        /**
+         * 获取${table.comment}列表.
+         */
+        @GetMapping(value = "/list")
+        @ApiOperation("获取${table.comment}列表")
+        public RestResponse<List<${entity}>> list() {
+            return new RestResponse<${entity}>(${table.entityPath}Service.selectList());
+        }
+
+        /**
+         * 新增${table.comment}信息.
+         */
+        @PostMapping(value = "/add")
+        @ApiOperation("新增${table.comment}信息")
+        public RestResponse<String> add(${entity} ${table.entityPath}) {
+            ${table.entityPath}Service.insert(${table.entityPath});
+            return new RestResponse<${entity}>();
+        }
+
+        /**
+         * 删除${table.comment}信息.
+         */
+        @PostMapping(value = "/delete/{id}")
+        @ApiOperation("删除${table.comment}信息")
+        public RestResponse<String> delete(@PathVariable("id") Long id) {
+            ${table.entityPath}Service.deleteById(id);
+            return new RestResponse<${entity}>();
+        }
+
+        /**
+         * 修改${table.comment}信息.
+         */
+        @PostMapping(value = "/update")
+        @ApiOperation("修改${table.comment}信息")
+        public RestResponse<${entity}> update(${entity} ${table.entityPath}) {
+            ${table.entityPath}Service.updateById(${table.entityPath});
+            return new RestResponse<${entity}>();
+        }
+
+        /**
+         * 根据ID获取${table.comment}信息.
+         */
+        @GetMapping(value = "/get/{id}")
+        @ApiOperation("根据ID获取${table.comment}信息")
+        public RestResponse<${entity}> get(@PathVariable("id") Long id) {
+            return new RestResponse<${entity}>(${table.entityPath}Service.selectById(id));
+        }
+}
+
+#end
