@@ -6,6 +6,7 @@ import io.swagger.annotations.ApiOperation;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import com.tievoli.sbfuse.framework.GlobalContants;
 import com.tievoli.sbfuse.framework.http.RestResponse;
 import ${package.Service}.${table.serviceName};
 import ${package.Entity}.${entity};
@@ -93,6 +94,17 @@ public class ${table.controllerName} {
         @ApiOperation("根据ID获取${table.comment}信息")
         public RestResponse<${entity}> get(@PathVariable("id") Long id) {
             return new RestResponse<${entity}>(${table.entityPath}Service.selectById(id));
+        }
+
+        /**
+         * 分页查询${table.comment}信息.
+         */
+        @GetMapping(value = "/select${entity}PageList")
+        @ApiOperation("分页查询${table.comment}信息")
+        public Page<${entity}> select${entity}PageList() {
+            Page<${entity}> page = new Page<>(GlobalContants.defaultCurrentPage, GlobalContants.defaultPageSize);
+            EntityWrapper<${entity}> wrapper = Condition.wrapper();
+            return ${table.entityPath}Service.selectPage(page, wrapper);
         }
 }
 
